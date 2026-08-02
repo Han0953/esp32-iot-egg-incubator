@@ -1,3 +1,9 @@
+/*
+ * ==============================================================================
+ * Smart IoT Egg Incubator System
+ * ==============================================================================
+ */
+
 #define BLYNK_TEMPLATE_ID "FILL_TEMPLATE_ID"
 #define BLYNK_TEMPLATE_NAME "FILL_TEMPLATE_NAME"
 #define BLYNK_AUTH_TOKEN "FILL_TOKEN"
