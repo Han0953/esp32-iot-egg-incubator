@@ -1,7 +1,7 @@
 // ================= MASUKKAN INI DI PALING ATAS (WAJIB!) =================
-#define BLYNK_TEMPLATE_ID "TMPL6bOgfxpwb"
-#define BLYNK_TEMPLATE_NAME "Inkubator Penetas Telur Otomatis"
-#define BLYNK_AUTH_TOKEN "Woe3siEX83mSpVtcgGhyDc9kvZRE5kCl"
+#define BLYNK_TEMPLATE_ID "ISI TEMPLATE ID"
+#define BLYNK_TEMPLATE_NAME "NAMA TEMPLATE"
+#define BLYNK_AUTH_TOKEN "TOKEN"
 
 #define BLYNK_PRINT Serial
 
@@ -16,8 +16,8 @@
 
 // ================= KREDENSIAL WIFI HOTSPOT =================
 char auth[] = BLYNK_AUTH_TOKEN;
-char ssid[] = "ROG Phone 9 PRO";
-char pass[] = "tanpapassword";
+char ssid[] = "NAMA WIFI";
+char pass[] = "PASS";
 
 // ================= PENGATURAN PIN & HARDWARE =================
 #define DHTPIN 4
