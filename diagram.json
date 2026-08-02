@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "author": "Kelompok 1 PVTE",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": -140,
+      "left": -180,
+      "attrs": { "temperature": "28.5", "humidity": "65" }
+    },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd1",
+      "top": -220,
+      "left": 140,
+      "attrs": { "pins": "i2c" }
+    },
+    {
+      "type": "wokwi-max7219-matrix",
+      "id": "matrix1",
+      "top": -340,
+      "left": 140,
+      "attrs": { "chain": "4" }
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay_lamp",
+      "top": 180,
+      "left": -220,
+      "attrs": { "name": "Relay Lamp (GPIO26)" }
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay_fan",
+      "top": 280,
+      "left": -220,
+      "attrs": { "name": "Relay Fan (GPIO14)" }
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay_motor",
+      "top": 380,
+      "left": -220,
+      "attrs": { "name": "Relay Motor (GPIO27)" }
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "servo1",
+      "top": 380,
+      "left": 50,
+      "attrs": { "name": "Motor Pemutar Telur" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_mode",
+      "top": 120,
+      "left": 260,
+      "attrs": { "color": "red", "label": "MODE (GPIO32)" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_lamp",
+      "top": 180,
+      "left": 260,
+      "attrs": { "color": "yellow", "label": "LAMP (GPIO33)" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_fan",
+      "top": 240,
+      "left": 260,
+      "attrs": { "color": "blue", "label": "FAN (GPIO25)" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_motor",
+      "top": 300,
+      "left": 260,
+      "attrs": { "color": "green", "label": "MOTOR (GPIO13)" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:GND.1", "dht1:GND", "black", [ "v0" ] ],
+    [ "esp:3V3", "dht1:VCC", "red", [ "v0" ] ],
+    [ "esp:D4", "dht1:SDA", "green", [ "v0" ] ],
+    [ "esp:GND.1", "lcd1:GND", "black", [ "v0" ] ],
+    [ "esp:5V", "lcd1:VCC", "red", [ "v0" ] ],
+    [ "esp:D21", "lcd1:SDA", "blue", [ "v0" ] ],
+    [ "esp:D22", "lcd1:SCL", "yellow", [ "v0" ] ],
+    [ "esp:GND.1", "matrix1:GND", "black", [ "v0" ] ],
+    [ "esp:5V", "matrix1:V+", "red", [ "v0" ] ],
+    [ "esp:D23", "matrix1:DIN", "orange", [ "v0" ] ],
+    [ "esp:D5", "matrix1:CS", "purple", [ "v0" ] ],
+    [ "esp:D18", "matrix1:CLK", "white", [ "v0" ] ],
+    [ "esp:GND.1", "relay_lamp:GND", "black", [ "v0" ] ],
+    [ "esp:5V", "relay_lamp:VCC", "red", [ "v0" ] ],
+    [ "esp:D26", "relay_lamp:IN", "yellow", [ "v0" ] ],
+    [ "esp:GND.1", "relay_fan:GND", "black", [ "v0" ] ],
+    [ "esp:5V", "relay_fan:VCC", "red", [ "v0" ] ],
+    [ "esp:D14", "relay_fan:IN", "cyan", [ "v0" ] ],
+    [ "esp:GND.1", "relay_motor:GND", "black", [ "v0" ] ],
+    [ "esp:5V", "relay_motor:VCC", "red", [ "v0" ] ],
+    [ "esp:D27", "relay_motor:IN", "magenta", [ "v0" ] ],
+    [ "esp:GND.1", "servo1:GND", "black", [ "v0" ] ],
+    [ "esp:5V", "servo1:V+", "red", [ "v0" ] ],
+    [ "esp:D27", "servo1:PWM", "magenta", [ "v0" ] ],
+    [ "esp:D32", "btn_mode:1.0", "red", [ "v0" ] ],
+    [ "esp:3V3", "btn_mode:2.0", "red", [ "v0" ] ],
+    [ "esp:D33", "btn_lamp:1.0", "yellow", [ "v0" ] ],
+    [ "esp:3V3", "btn_lamp:2.0", "red", [ "v0" ] ],
+    [ "esp:D25", "btn_fan:1.0", "blue", [ "v0" ] ],
+    [ "esp:3V3", "btn_fan:2.0", "red", [ "v0" ] ],
+    [ "esp:D13", "btn_motor:1.0", "green", [ "v0" ] ],
+    [ "esp:3V3", "btn_motor:2.0", "red", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}
