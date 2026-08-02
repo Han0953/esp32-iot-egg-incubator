@@ -1,0 +1,21 @@
+# === Arduino / ESP32 Build Outputs ===
+build/
+*.elf
+*.bin
+*.hex
+*.map
+
+# === Editor & IDE Folders ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === OS Temporary Files ===
+.DS_Store
+Thumbs.db
+
+# === Logs & Backup Files ===
+*.log
+*.tmp
+*.bak
