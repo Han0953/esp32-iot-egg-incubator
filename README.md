@@ -103,3 +103,63 @@ Heater ON / Fan OFF     Heater OFF / Fan ON
   |  Scheduled Egg Tray Turner  |
   |  (3s Motor Active Interval) |
   +-----------------------------+
+
+# ☁️ Blynk Virtual Pin Configuration
+
+| Virtual Pin | Function |
+|-------------|----------|
+| **V0** | Temperature Data Output (`int`) |
+| **V1** | Humidity Data Output (`int`) |
+| **V2** | Mode Switch (`1 = Auto`, `0 = Manual`) |
+| **V3** | Heating Lamp Control Switch |
+| **V4** | Cooling Fan Control Switch |
+| **V5** | Synchronous Motor Control Switch |
+
+---
+
+# 💻 Installation & Setup Guide
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/Inkubator-Telur-Hybrid-IoT.git
+```
+
+## 2. Install Required Arduino Libraries
+
+Buka **Arduino IDE** → **Library Manager**, lalu install library berikut:
+
+- **Blynk** by Volodymyr Shymanskyy
+- **DHT sensor library** by Adafruit
+- **LiquidCrystal_I2C** by Frank de Brabander
+- **MD_Parola**
+- **MD_MAX7219** by MajicDesigns
+
+## 3. Configure Network Credentials
+
+Buka file `Inkubator_IoT.ino`, kemudian ubah bagian berikut sesuai akun Blynk dan Wi-Fi yang digunakan:
+
+```cpp
+#define BLYNK_TEMPLATE_ID "YOUR_TEMPLATE_ID"
+#define BLYNK_TEMPLATE_NAME "INKUBATOR TELUR"
+#define BLYNK_AUTH_TOKEN "YOUR_AUTH_TOKEN"
+
+char ssid[] = "YOUR_HOTSPOT_NAME";
+char pass[] = "YOUR_HOTSPOT_PASSWORD";
+```
+
+## 4. Flash to Hardware
+
+- Pilih board **ESP32 Dev Module** pada Arduino IDE.
+- Hubungkan ESP32 ke komputer.
+- Klik **Upload** untuk mengunggah program ke ESP32.
+
+---
+
+# 📂 Repository Structure
+
+```text
+├── Inkubator_IoT.ino    # Main ESP32 Arduino Source Code
+├── diagram.json         # Wokwi Circuit Diagram & Simulation Configuration
+└── README.md            # Project Documentation
+```
