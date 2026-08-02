@@ -55,3 +55,62 @@
 ---
 
 ## ⚡ Operational Logic Flow
+
++-----------------------+
+                 |   System Boot-up      |
+                 | (3.5s Splash Screen)  |
+                 +-----------+-----------+
+                             |
+                             v
+                 +-----------------------+
+                 | Read DHT22 Sensor &   |
+                 | Check Wi-Fi / Blynk   |
+                 +-----------+-----------+
+                             |
+             +---------------+---------------+
+             |                               |
+             v                               v
+    [ Temperature < 30°C ]        [ Temperature > 31°C ]
+             |                               |
+             v                               v
+    Heater ON | Fan OFF             Heater OFF | Fan ON
+             |                               |
+             +---------------+---------------+
+                             |
+                             v
+                 +-----------------------+
+                 |  Automated Egg Turner |
+                 | (Periodic 3s Motor)   |
+                 +-----------------------+
+
+---
+
+## 💻 Installation & Setup Guide
+
+1. **Clone or Download Repository:**
+   ```bash
+   git clone [https://github.com/YOUR_USERNAME/Inkubator-Telur-Hybrid-IoT.git](https://github.com/YOUR_USERNAME/Inkubator-Telur-Hybrid-IoT.git)
+Required Arduino IDE Libraries:
+Ensure the following libraries are installed via the Arduino Library Manager:
+
+Blynk by Volodymyr Shymanskyy
+
+DHT sensor library by Adafruit
+
+LiquidCrystal_I2C by Frank de Brabander
+
+MD_Parola & MD_MAX7219 by MajicDesigns
+
+Configure Credentials:
+Open Inkubator_IoT.ino and replace the placeholder credentials with your network configuration:
+
+C++
+char auth[] = "YOUR_BLYNK_AUTH_TOKEN";
+char ssid[] = "YOUR_WIFI_SSID";
+char pass[] = "YOUR_WIFI_PASSWORD";
+Compile & Flash: Select ESP32 Dev Module in Arduino IDE and click Upload.
+
+👥 Contributors
+Kelompok 1 PVTE - Universitas Muhammadiyah Riau (UMRI)
+
+Project Repository: Inkubator-Telur-Hybrid-IoT
