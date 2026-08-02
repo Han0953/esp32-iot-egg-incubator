@@ -6,10 +6,10 @@
 [![ESP32](https://img.shields.io/badge/Hardware-ESP32-red?style=for-the-badge&logo=espressif)](https://www.espressif.com/)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B-blue?style=for-the-badge&logo=c%2B%2B)](https://isocpp.org/)
 [![IoT Platform](https://img.shields.io/badge/IoT-Blynk-00E5FF?style=for-the-badge&logo=blynk)](https://blynk.io/)
-[![Status](https://img.shields.io/badge/Build-Passing-success?style=for-the-badge)]()
+[![Simulation](https://img.shields.io/badge/Simulation-Wokwi-00C853?style=for-the-badge)](https://wokwi.com/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)]()
 
-*A resilient, smart egg incubation system engineered for zero-downtime operation, seamless climate regulation, and dual-mode physical/cloud control.*
+*A resilient, intelligent egg incubation system engineered for zero-downtime operation, precise climate regulation, and seamless dual-mode physical/cloud control.*
 
 ---
 
@@ -20,97 +20,86 @@
 
 <br />
 
-> 💡 **Why Hybrid?** Most standard IoT devices freeze or fail when network connection drops. This system employs a non-blocking architecture (`WiFi.begin` + `Blynk.config`) that ensures **100% operational continuity** in offline mode while dynamically syncing with the cloud when connection is restored.
+> 💡 **Why Hybrid Offline Fallback?** Standard IoT devices often freeze or become un-responsive when Wi-Fi or server connections fail. This system employs a non-blocking connection architecture (`WiFi.begin` + `Blynk.config`) that ensures **100% operational continuity offline** using physical controls and local sensor logic, while automatically syncing with the Blynk Cloud when network connectivity is restored.
 
 ---
 
 ## 🌟 Key Features
 
-- ⚙️ **Offline-First Hybrid Architecture:** Uninterrupted automatic control logic even during total Wi-Fi or server outages.
-- 🌡️ **Precision Climate Regulation:** Automatic hysteresis temperature management utilizing high-accuracy DHT22 sensor readings.
-- 🔄 **Automated Tray Rotation:** Scheduled synchronous motor activation to ensure uniform heat distribution for optimal hatch rates.
-- 🖥️ **Dual Visual Output:**
-  - **16x2 I2C LCD:** Displays integer-based temperature, humidity, operational state, and network status (`W:ON` / `W:OF`).
-  - **MAX7219 LED Matrix:** Provides a secondary dynamic ticker for real-time system diagnostic messages.
-- 🕹️ **Fail-Safe Physical Controls:** Color-coded tactile buttons for manual override at any given moment.
+- ⚙️ **Offline-First Hybrid Architecture:** Autonomous control logic runs continuously regardless of Wi-Fi or internet connection status.
+- 🌡️ **Precision Climate Regulation:** Automatic temperature control based on DHT22 sensor readings:
+  - **Cold Condition (< 30°C):** Heating Lamp **ON**, Cooling Fan **OFF**.
+  - **Hot Condition (> 31°C):** Heating Lamp **OFF**, Cooling Fan **ON**.
+- 🔄 **Automated Tray Rotation:** Periodic synchronous motor activation (rotates for 3 seconds every minute/interval) for uniform egg warming.
+- 🖥️ **Dual Local Displays:**
+  - **16x2 I2C LCD:** Displays integer temperature (`S:XX°C`), humidity (`H:XX%`), system state (`A/M`), relay statuses, and network state (`W:ON` / `W:OF`).
+  - **MAX7219 LED Matrix (4-in-1):** Dynamic scrolling text for real-time diagnostic and transition messages.
+- 🕹️ **Fail-Safe Physical Controls:** 4 color-coded tactile buttons for instant physical manual override.
 
 ---
 
 ## 🛠️ Hardware Specifications & Pin Mapping
 
-| Component | Hardware Model | Function / Purpose | Pin Assignment |
+| Component | Hardware Model | Function / Description | GPIO Pin |
 | :--- | :--- | :--- | :--- |
-| **Microcontroller** | ESP32 DevKit V1 | Main logic processor & Wi-Fi controller | — |
-| **Sensor** | DHT22 (AM2302) | Temperature & Humidity Sensing | `GPIO 04` |
+| **Microcontroller** | ESP32 DevKit V1 | Main logic processor & Wi-Fi module | — |
+| **Sensor** | DHT22 (AM2302) | High-accuracy Temperature & Humidity Sensor | `GPIO 04` |
 | **Relay Ch 1** | 5V Relay Module | Heating Lamp Power Control | `GPIO 26` |
-| **Relay Ch 2** | 5V Relay Module | Cooling Fan Power Control | `GPIO 27` |
-| **Relay Ch 3** | 5V Relay Module | Synchronous Motor Control | `GPIO 14` |
-| **Display 1** | LCD 16x2 I2C | Primary Local Dashboard | `SDA (21)`, `SCL (22)` |
-| **Display 2** | MAX7219 Matrix | Secondary Status Ticker | `DIN`, `CS`, `CLK` |
-| **Mode Button** | Tactile Switch (Red) | Auto / Manual State Toggle | `GPIO 13` |
-| **Lamp Button** | Tactile Switch (Yellow) | Manual Lamp Override | `GPIO 12` |
-| **Fan Button** | Tactile Switch (Blue) | Manual Fan Override | `GPIO 02` |
-| **Motor Button**| Tactile Switch (Green) | Manual Motor Override | `GPIO 15` |
+| **Relay Ch 2** | 5V Relay Module | Cooling Fan Power Control | `GPIO 14` |
+| **Relay Ch 3** | 5V Relay Module | Synchronous Motor Control | `GPIO 27` |
+| **Display 1** | LCD 16x2 (I2C) | Local Statistics & Network Indicator | `SDA (21)`, `SCL (22)` |
+| **Display 2** | MAX7219 Matrix | Secondary Dynamic Status Ticker | `DIN (23)`, `CS (05)`, `CLK (18)` |
+| **Button 1 (Red)** | Tactile Push Button | Toggle Auto / Manual Mode | `GPIO 32` |
+| **Button 2 (Yellow)**| Tactile Push Button | Manual Heating Lamp Control | `GPIO 33` |
+| **Button 3 (Blue)**  | Tactile Push Button | Manual Cooling Fan Control | `GPIO 25` |
+| **Button 4 (Green)** | Tactile Push Button | Manual Synchronous Motor Control | `GPIO 13` |
 
 ---
 
-## ⚡ Operational Logic Flow
+## 🕹️ Physical Manual Button Mapping
 
-+-----------------------+
-                 |   System Boot-up      |
-                 | (3.5s Splash Screen)  |
-                 +-----------+-----------+
-                             |
-                             v
-                 +-----------------------+
-                 | Read DHT22 Sensor &   |
-                 | Check Wi-Fi / Blynk   |
-                 +-----------+-----------+
-                             |
-             +---------------+---------------+
-             |                               |
-             v                               v
-    [ Temperature < 30°C ]        [ Temperature > 31°C ]
-             |                               |
-             v                               v
-    Heater ON | Fan OFF             Heater OFF | Fan ON
-             |                               |
-             +---------------+---------------+
-                             |
-                             v
-                 +-----------------------+
-                 |  Automated Egg Turner |
-                 | (Periodic 3s Motor)   |
-                 +-----------------------+
+The system includes 4 color-coded push buttons connected via internal `INPUT_PULLDOWN` logic:
+- 🔴 **Red Button (MODE - GPIO 32):** Switches system between **Automatic Mode** and **Manual Mode**.
+- 🟡 **Yellow Button (LAMP - GPIO 33):** Toggles Heating Lamp ON/OFF (Manual Mode only).
+- 🔵 **Blue Button (FAN - GPIO 25):** Toggles Cooling Fan ON/OFF (Manual Mode only).
+- 🟢 **Green Button (MOTOR - GPIO 13):** Toggles Synchronous Motor ON/OFF (Manual Mode only).
 
 ---
 
-## 💻 Installation & Setup Guide
+## ⚡ System Logic & Workflow Diagram
 
-1. **Clone or Download Repository:**
-   ```bash
-   git clone [https://github.com/YOUR_USERNAME/Inkubator-Telur-Hybrid-IoT.git](https://github.com/YOUR_USERNAME/Inkubator-Telur-Hybrid-IoT.git)
-Required Arduino IDE Libraries:
-Ensure the following libraries are installed via the Arduino Library Manager:
-
-Blynk by Volodymyr Shymanskyy
-
-DHT sensor library by Adafruit
-
-LiquidCrystal_I2C by Frank de Brabander
-
-MD_Parola & MD_MAX7219 by MajicDesigns
-
-Configure Credentials:
-Open Inkubator_IoT.ino and replace the placeholder credentials with your network configuration:
-
-C++
-char auth[] = "YOUR_BLYNK_AUTH_TOKEN";
-char ssid[] = "YOUR_WIFI_SSID";
-char pass[] = "YOUR_WIFI_PASSWORD";
-Compile & Flash: Select ESP32 Dev Module in Arduino IDE and click Upload.
-
-👥 Contributors
-Kelompok 1 PVTE - Universitas Muhammadiyah Riau (UMRI)
-
-Project Repository: Inkubator-Telur-Hybrid-IoT
+```text
+                     +-------------------------------+
+                     |        System Boot-up         |
+                     |  (3.5s LCD Splash Screen)     |
+                     +---------------+---------------+
+                                     |
+                                     v
+                     +-------------------------------+
+                     |  Non-Blocking Connection Init |
+                     |   (WiFi.begin & Blynk.config) |
+                     +---------------+---------------+
+                                     |
+                                     v
+                     +-------------------------------+
+                     |   Read DHT22 Sensor & Buttons |
+                     +---------------+---------------+
+                                     |
+                 +-------------------+-------------------+
+                 |                                       |
+                 v                                       v
+         [ AUTOMATIC MODE ]                      [ MANUAL MODE ]
+                 |                                       |
+  +--------------+--------------+          +-------------+-------------+
+  |                             |          | Direct Physical Button    |
+  v                             v          | & Blynk V-Pin Overrides   |
+[ Temp < 30°C ]         [ Temp > 31°C ]    +---------------------------+
+Heater ON / Fan OFF     Heater OFF / Fan ON
+  |                             |
+  +--------------+--------------+
+                 |
+                 v
+  +-----------------------------+
+  |  Scheduled Egg Tray Turner  |
+  |  (3s Motor Active Interval) |
+  +-----------------------------+
